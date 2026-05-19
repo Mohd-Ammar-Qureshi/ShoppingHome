@@ -1,0 +1,77 @@
+import { useEffect, useState } from "react";
+import { navLinks } from "../../data/Data";
+import SearchOverlay from "../SearchOverlay";
+import CartDrawer from "../CartDrawer";
+import MobileMenu from "../MoblieMenu";
+
+const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchVal, setSearchVal] = useState("");
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <>
+      <SearchOverlay
+        searchOpen={searchOpen}
+        setSearchOpen={setSearchOpen}
+        searchVal={searchVal}
+        setSearchVal={setSearchVal}
+      />
+
+      <CartDrawer cartOpen={cartOpen} setCartOpen={setCartOpen} />
+
+      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+
+      <header
+        className={`fixed top-0 left-0 w-full z-30 transition-all duration-300 ${
+          scrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+        }`}
+      >
+        <nav className="flex items-center justify-between px-6 h-20 text-white">
+          <div className="flex gap-7">
+            <button onClick={() => setMenuOpen(true)} className="text-2xl">
+              ☰
+            </button>
+
+            <a href="#" className="text-3xl font-bold">
+              SHOPPING<span className="text-yellow-400">.</span>HOME
+            </a>
+          </div>
+
+          <ul className="hidden lg:flex gap-8">
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className={`hover:text-yellow-400 transition ${
+                    link.accent && "text-yellow-400"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-5 text-2xl">
+            <button onClick={() => setSearchOpen(true)}>🔍</button>
+
+            <button onClick={() => setCartOpen(true)}>🛒</button>
+          </div>
+        </nav>
+      </header>
+    </>
+  );
+};
+
+export default Header;
