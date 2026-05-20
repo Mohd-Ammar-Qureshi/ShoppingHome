@@ -3,7 +3,7 @@ import { navLinks } from "../data/data";
 const MobileMenu = ({ menuOpen, setMenuOpen }) => {
   return (
     <div
-      className={`fixed inset-0 bg-black z-50 p-10 transition-transform duration-300 ${
+      className={`fixed md:w-1/3 sm:w-1/4 inset-0 bg-black z-50 p-10 transition-transform duration-300 ${
         menuOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >

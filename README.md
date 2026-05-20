@@ -58,7 +58,7 @@ src/
 Clone the repository:
 
 ```bash id="guksz6"
-git clone <your-repo-link>
+git clone <....Progress>
 ```
 
 Move into the project folder:

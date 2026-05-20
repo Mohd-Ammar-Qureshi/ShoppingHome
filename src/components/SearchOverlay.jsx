@@ -21,7 +21,7 @@ const SearchOverlay = ({
 
         <button
           onClick={() => setSearchOpen(false)}
-          className="text-white text-3xl"
+          className="text-white text-2xl"
         >
           ✕
         </button>

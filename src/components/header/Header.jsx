@@ -3,7 +3,7 @@ import { navLinks } from "../../data/Data";
 import SearchOverlay from "../SearchOverlay";
 import CartDrawer from "../CartDrawer";
 import MobileMenu from "../MoblieMenu";
-
+import { Search, ShoppingCart } from "lucide-react";
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -37,13 +37,16 @@ const Header = () => {
           scrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-transparent"
         }`}
       >
-        <nav className="flex items-center justify-between px-6 h-20 text-white">
-          <div className="flex gap-7">
-            <button onClick={() => setMenuOpen(true)} className="text-2xl">
+        <nav className=" flex items-center justify-between px-6 h-18 text-white">
+          <div className=" flex gap-7">
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="lg:invisible text-2xl"
+            >
               ☰
             </button>
 
-            <a href="#" className="text-3xl font-bold">
+            <a href="#" className="text-2xl font-bold">
               SHOPPING<span className="text-yellow-400">.</span>HOME
             </a>
           </div>
@@ -64,9 +67,13 @@ const Header = () => {
           </ul>
 
           <div className="flex items-center gap-5 text-2xl">
-            <button onClick={() => setSearchOpen(true)}>🔍</button>
+            <button onClick={() => setSearchOpen(true)}>
+              <Search />
+            </button>
 
-            <button onClick={() => setCartOpen(true)}>🛒</button>
+            <button onClick={() => setCartOpen(true)}>
+              <ShoppingCart />
+            </button>
           </div>
         </nav>
       </header>
