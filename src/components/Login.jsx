@@ -1,42 +1,106 @@
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+
+import authService from "../appwrite/auth";
+import { login as authLogin } from "../store/authSlice";
+
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { register, handleSubmit } = useForm();
+
+  const [error, setError] = useState("");
+
+  const login = async (data) => {
+    setError("");
+
+    try {
+      const session = await authService.login(data);
+
+      if (session) {
+        const userData = await authService.getCurrentUser();
+
+        if (userData) {
+          dispatch(
+            authLogin({
+              userData: {
+                $id: userData.$id,
+                name: userData.name,
+                email: userData.email,
+              },
+            })
+          );
+
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
-    <div className="bg-[#0f172a] border m-auto  border-green-500/20 rounded-2xl p-8 max-w-md shadow-xl">
-      {/* App Name */}
-      <h1 className="text-3xl font-bold text-center text-white mb-2">
-        🛒 ShoppingHome
-      </h1>
-      <p className="text-gray-400 text-center mb-6 text-sm">
-        Welcome back! Login to continue
-      </p>
+       <div className="h-1/2 mt-14 mb-17 flex text-white">
+      <div className="bg-white/10 p-8 rounded-xl w-[350px]">
 
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full mb-4 p-3 rounded-lg bg-black border border-green-500/30 text-white outline-none focus:border-green-400"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          Sign In
+        </h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full mb-6 p-3 rounded-lg bg-black border border-green-500/30 text-white outline-none focus:border-green-400"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        {error && (
+          <p className="text-red-500 mb-4 text-center">
+            {error}
+          </p>
+        )}
 
-      <button
-        onClick={handleLogin}
-        className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-lg transition"
-      >
-        Login
-      </button>
+        <form onSubmit={handleSubmit(login)}>
 
-      <p className="text-gray-400 text-sm text-center mt-4">
-        New here?{" "}
-        <span className="text-green-400 cursor-pointer">Create account</span>
-      </p>
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 mb-4 rounded bg-black/40 border border-white/20 outline-none"
+            {...register("email", {
+              required: "Email is required",
+              validate: {
+                matchPattern: (value) =>
+                  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
+                  "Enter valid email",
+              },
+            })}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 mb-4 rounded bg-black/40 border border-white/20 outline-none"
+            {...register("password", {
+              required: "Password is required",
+            })}
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-400 text-black py-3 rounded font-semibold hover:bg-yellow-300 transition"
+          >
+            Login
+          </button>
+
+        </form>
+
+        <p className="text-center mt-6 text-gray-300">
+          Don't have an account?{" "}
+          <button
+            onClick={() => navigate("/signup")}
+            className="text-yellow-400 hover:underline"
+          >
+            Sign Up
+          </button>
+        </p>
+
+      </div>
     </div>
   );
 };

@@ -5,12 +5,24 @@ import store from "./store/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
+import Home from "./components/Home.jsx";
+import Login from "./components/Login.jsx";
+import Signup from "./components/Signup.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{}, {}],
+    children: [{
+      path: "/",
+      element: <Home/>
+    }, {
+      path: "/login",
+      element: <Login/>
+    },{
+      path: "/signup",
+      element: <Signup/>
+    }],
   },
 ]);
 
